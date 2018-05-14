@@ -83,9 +83,13 @@ func (b *batch) Queue(fn WorkFunc) {
 // but block forever listening for more results.
 func (b *batch) QueueComplete() {
 	b.m.Lock()
-	b.closed = true
-	close(b.done)
-	b.m.Unlock()
+	if b.closed == false{
+		b.closed = true
+		close(b.done)
+		b.m.Unlock()
+	}else {
+		b.m.Unlock()
+	}
 }
 
 // Cancel cancels the Work Units belonging to this Batch
@@ -110,9 +114,9 @@ func (b *batch) Results() <-chan WorkUnit {
 
 	go func(b *batch) {
 		<-b.done
-		b.m.Lock()
+		//b.m.Lock()
 		b.wg.Wait()
-		b.m.Unlock()
+		//b.m.Unlock()
 		close(b.results)
 	}(b)
 
