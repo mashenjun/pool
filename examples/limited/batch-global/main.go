@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"gopkg.in/go-playground/pool.v3"
+	"github.com/mashenjun/pool"
 )
 
 var gpool = pool.NewLimited(5)
